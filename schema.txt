@@ -1,0 +1,15 @@
+DEFINE A SCHEMA FOR MY DATA BASE
+
+		BOOKS
+
+BOOKID   AUTHOR		TITLE	 YEAR 	CATEGORIES 		TIMESTAMP	
+
+uuid	  text		text	 int    set of text 	timestamp
+  |
+  |
+ These is the unique KEY used to retrive the data qhit queries later on.
+ Also known as a partition key. 
+ BECAUSE OUR DATA BASE IS A DRISTIBUTED DB, we can store the date in losts and losts of different nodes. so 
+ If two rows have the same partition ket they will be stored togehter, adn in a query the will be both returned
+
+ EXAMPLE ONE: We are going to store books in aor relational DB 
