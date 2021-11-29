@@ -1,0 +1,28 @@
+
+We start by typing
+	
+#All the keyspaces asocietted whit my DB # It is a logical grouping of tables
+
+token@cqlsh> describe keyspaces;	
+
+system_virtual_schema  system_auth   system   datastax_sla        system_traces
+system_schema          system_views  tabular  data_endpoint_auth
+
+token@cqlsh> use tabular;
+
+token@cqlsh:tabular>
+token@cqlsh:tabular>
+(NOW, INSIDE THE KEYSPACE I want to create a table)
+
+token@cqlsh:tabular> CREATE TABLE IF NOT EXISTS books(
+	... bookid uuid,
+	... author text,
+	... title text, 
+	... year int,
+	... categories set <text>,
+	... added timestamp,
+	... PRIMARY KEY (bookid)
+	... );
+
+token@cqlsh:tabular> CREATE TABLE IF NOT EXISTS books( bookid uuid, author text, title text, year int, categories set <text>, added timestamp, PRIMARY KEY (bookid) );
+
