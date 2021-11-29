@@ -1,0 +1,5 @@
+NODES: Each node connected by an edge to represent this relationship
+
+Great way to store date tahat has relation whit other pices of data
+
+

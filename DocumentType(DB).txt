@@ -1,0 +1,58 @@
+THEY REQUERI NO SCHEMA
+
+They look like this;
+	{
+		"id": 0,
+		"title"; "fix bike",
+		"description": "fix bike before housemate finds out"
+		"done": true
+	}
+
+	JSON
+
+
+Collection: A group of documents
+
+COLECCTIONS
+
+Gonna make a collection of TODO items using a document API
+
+API: Application programming interface; allwo technologies to talk each other, they can shape the information passed from one tech to another. As a developer u might use twiterr API to get twits in your site, use an API to get date from a 3rd partie person to use it as a service o even use it to retrive or delete date from a managment system.
+
+HTTP REQUEST METHODS/ END POINTS:
+
+GET /burgers -----> Gets data
+POST /burgers
+PUT /burgers{id} ---> Edit a singular burger
+DELETE /burgers{id}
+
+
+
+CREATED A COLLECTION: Dinner
+
+{
+  "documentId": "e7af1262-c83e-43ef-bf60-7931c7aebbba"
+}
+
+SEARCH EVRITHING:
+
+
+
+HOW TO PICK UP AN ITEM BASE ON THE DOCUMENT ID:
+
+GET: Retrieve the JSON representation of the document
+
+{
+  "documentId": "e7af1262-c83e-43ef-bf60-7931c7aebbba",
+  "data": {
+    "description": "make dinner to apologize",
+    "done": false,
+    "id": 1,
+    "title": "make dinner"
+  }
+}
+
+
+
+
+
