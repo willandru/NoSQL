@@ -26,3 +26,119 @@ token@cqlsh:tabular> CREATE TABLE IF NOT EXISTS books(
 
 token@cqlsh:tabular> CREATE TABLE IF NOT EXISTS books( bookid uuid, author text, title text, year int, categories set <text>, added timestamp, PRIMARY KEY (bookid) );
 
+token@cqlsh:tabular> describe keyspace tabular;
+
+				CREATE KEYSPACE tabular WITH replication = {'class': 'NetworkTopologyStrategy', 'brazilsouth': '3'}  AND durable_writes = true;
+
+				CREATE TABLE tabular.books (
+				    bookid uuid PRIMARY KEY,
+				    added timestamp,
+				    author text,
+				    categories set<text>,
+				    title text,
+				    year int
+				) WITH additional_write_policy = '99PERCENTILE'
+				    AND bloom_filter_fp_chance = 0.01
+				    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+				    AND comment = ''
+				    AND compaction = {'class': 'org.apache.cassandra.db.compaction.UnifiedCompactionStrategy'}
+				    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+				    AND crc_check_chance = 1.0
+				    AND default_time_to_live = 0
+				    AND gc_grace_seconds = 864000
+				    AND max_index_interval = 2048
+				    AND memtable_flush_period_in_ms = 0
+				    AND min_index_interval = 128
+				    AND read_repair = 'BLOCKING'
+				    AND speculative_retry = '99PERCENTILE';
+
+
+token@cqlsh:tabular> INSERT INTO books (bookid, author, title, year, categories, added)   ...   VALUES(uuid(), 'Bobby Brown', 'Dealing with tables', 1999,  
+... {'programing','computers'} , toTimeStamp(now()));
+
+token@cqlsh:tabular> select * from books;
+
+			bookid                               | added                           | author      | categories                  | title               | year
+			--------------------------------------+---------------------------------+-------------+-----------------------------+---------------------+------
+			 1a562b04-160b-4849-8145-aa3e4a1e480d | 2021-11-29 16:10:26.133000+0000 | Bobby Brown | {'computers', 'programing'} | Dealing with tables | 1999
+
+			(1 rows)
+
+LETS ADD ANOTHER ROW TO OUR TABLE
+
+
+token@cqlsh:tabular> INSERT INTO books(bookid, author,title, year, categories, added) 
+... VALUES(uuid(), 'Andrea Agnes', 'The Moon', 2001, {'space', 'nonfiction'}, toTimeStamp(
+... now()));
+
+	token@cqlsh:tabular> select * from books;
+
+
+			 bookid                               | added                           | author       | categories                  | title               | year
+			--------------------------------------+---------------------------------+--------------+-----------------------------+---------------------+------
+			 38c7261c-b489-44ec-ab65-5a6b55812274 | 2021-11-29 16:16:18.939000+0000 | Andrea Agnes |     {'nonfiction', 'space'} |            The Moon | 2001
+			 1a562b04-160b-4849-8145-aa3e4a1e480d | 2021-11-29 16:10:26.133000+0000 |  Bobby Brown | {'computers', 'programing'} | Dealing with tables | 1999
+
+			(2 rows)
+
+CHOOSING TO SEE ONLY 1 ROW , BASED ON ITS UNIQUE ID
+
+token@cqlsh:tabular> select * from books where bookid=
+... 38c7261c-b489-44ec-ab65-5a6b55812274 ;
+
+				 bookid                               | added                           | author       | categories              | title    | year
+				--------------------------------------+---------------------------------+--------------+-------------------------+----------+------
+				 38c7261c-b489-44ec-ab65-5a6b55812274 | 2021-11-29 16:16:18.939000+0000 | Andrea Agnes | {'nonfiction', 'space'} | The Moon | 2001
+
+				(1 rows)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+token@cqlsh:tabular> describe keyspaces;
+	system_virtual_schema  system_auth   system   datastax_sla        system_traces
+	system_schema          system_views  tabular  data_endpoint_auth
+
+token@cqlsh:tabular> use tabular;
+
+token@cqlsh:tabular> CREATE TABLE IF NOT EXISTS restaurant_by_country(country text, name text, cuisine text, url text, PRIMARY KEY((country), name, url) ) WITH CLUSTERING ORDER BY(name DESC, url ASC);
+
+token@cqlsh:tabular> INSERT INTO restaurant_by_country (country , name ,cuisine, url )
+           ... VALUES('POLAND', 'Weisjkes Karzcma', 'traditional', 'www.campcodeOrg.com');
+
+token@cqlsh:tabular> INSERT INTO restaurant_by_country (country , name ,cuisine, url ) VALUES('COMOLOMBIA', 'Donde Rosita', 'AREPEHUEVO', 'www.arepitas-empanaditas.com');
+
+token@cqlsh:tabular> INSERT INTO restaurant_by_country (country , name ,cuisine, url ) VALUES('ENGLAND', 'Bright Pier', 'FishNsHIPS', 'www.fish.uk');
+
+token@cqlsh:tabular> SELECT * from restaurant_by_country 
+           ... ;
+
+		 country    | name             | url                          | cuisine
+		------------+------------------+------------------------------+-------------
+		     POLAND | Weisjkes Karzcma |          www.campcodeOrg.com | traditional
+		    ENGLAND |      Bright Pier |                  www.fish.uk |  FishNsHIPS
+		 COMOLOMBIA |     Donde Rosita | www.arepitas-empanaditas.com |  AREPEHUEVO
+
+		(3 rows)
+token@cqlsh:tabular> 
+
+
+``````````````````````````````````````````````````
+token@cqlsh:tabular> SELECT * from restaurant_by_country;
+
+		 country    | name             | url                          | cuisine
+		------------+------------------+------------------------------+-------------
+		     POLAND | Weisjkes Karzcma |          www.campcodeOrg.com | traditional
+		    ENGLAND |      Bright Pier |                  www.fish.uk |  FishNsHIPS
+		 COMOLOMBIA |          The Hut |                   www.hut.sg |    LEBANESE
+		 COMOLOMBIA |     Donde Rosita | www.arepitas-empanaditas.com |  AREPEHUEVO
+
+		(4 rows)
+
+token@cqlsh:tabular> SELECT * from restaurant_by_country WHERE country= 'COMOLOMBIA';
+
+		 country    | name         | url                          | cuisine
+		------------+--------------+------------------------------+------------
+		 COMOLOMBIA |      The Hut |                   www.hut.sg |   LEBANESE
+		 COMOLOMBIA | Donde Rosita | www.arepitas-empanaditas.com | AREPEHUEVO
+
+		(2 rows)
