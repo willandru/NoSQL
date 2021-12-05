@@ -1,0 +1,372 @@
+>cls  /* Limpiar la terminal MQL*/
+
+>X=200
+
+> X*2
+400
+
+
+> Math.sin(Math.PI/2)
+
+
+> new Date()
+> new Date("2019/1/1")
+
+>function factorial(n) { id (n <= 1) return 1; return n* factorial(n-1) }
+
+>factorial(5)
+
+> db
+test
+
+>cls
+
+>show dbs
+admin 0.00GB
+config 0.00GB
+local  0.00GB
+
+
+>help 
+
+
+> db.help()
+
+> show dbs
+admin 0.00GB
+config 0.00GB
+local  0.00GB
+
+> db
+test
+
+> use webstore
+switched to db webstore
+
+>db
+webstore
+
+>show dbs
+admin 0.00GB
+config 0.00GB
+local  0.00GB
+
+
+> db.productos.insert({"name": "laptop"})
+WriteResult({"nInserted" : 1})
+
+
+>show dbs
+admin 0.00GB
+config 0.00GB
+local  0.00GB
+webstore 0.001GB
+
+
+>show collections
+productos
+
+
+>db
+webstore
+
+>db.dropDatabase()
+{ "dropped" : "webstore" , "ok" : 1 }
+
+>show dbs
+admin 0.00GB
+config 0.00GB
+local  0.00GB
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+
+COMO FUNCIONAN LAS COLECCIONES EN MongoDB
+
+>use webstore
+switched to db webstore
+
+>show collections
+
+>db.createCollection("users")
+{ "ok" : 1 }
+
+>show collections
+users
+
+>db.createCollection("products")
+{ "ok" : 1 }
+
+>db.createCollection("sellers")
+{ "ok" : 1 }
+
+>show collections
+users
+products
+sellers
+
+~~~~~~~~~~~
+
+db.help()
+
+~~~~~~~~~
+
+Eliminiar colleciones
+
+>show collections
+users
+products
+sellers
+
+>db.products.drop()
+true
+>db.users.dropt
+true
+>db.sellers.dropt
+true
+
+>show collections
+
+>cls
+
+~~~~~~~~~~~~~~~~~~~~~~~~~+
+
+OBJETO json
+
+
+{
+    "nombre" : "laptop",
+    "precio" : 40.2,
+    "active" : false,
+    "created_at" : new Date("12/12/1999),
+    "somedata" : [1, "a", []],
+    "facturer" : {
+        "name" : "dell",
+        "version" : "xps",
+        "location" : {
+            "city" : "usa",
+            "addres" : "asdadsad"
+        }
+    }
+}
+
+>db
+webstore
+
+>show collections
+
+>db.createCollection("asas")
+
+>db.products.insert({
+    "nombre" : "laptop",
+    "precio" : 40.2,
+    "active" : false,
+    "created_at" : new Date("12/12/1999),
+    "somedata" : [1, "a", []],
+    "facturer" : {
+        "name" : "dell",
+        "version" : "xps",
+        "location" : {
+            "city" : "usa",
+            "addres" : "asdadsad"
+        }
+    }
+})
+WriteResult({"nInserted} : 1)
+
+
+>db.products.find()
+{"_id" : ObjectId("252asf23ff"), "nombre" : "laptop",  "precio" : 40.2,  "active" : false, "created_at" : SODate("1999-12-12-122T05:00:00Z"),  "somedata" : [1, "a", []], "facturer" : {   "name" : "dell",  "version" : "xps",
+"location" : {  "city" : "usa",      "addres" : "asdadsad"   }  } }
+
+
+
+
+>db.products.find()   dE MI BASE DE DATOS ACTUAL, DE LA Collecion Productos, quiero buscar TODOS los datos
+
+>db.products.find().pretty()
+{  
+    "_id" : ObjectId("252asf23ff")
+    "nombre" : "laptop",
+    "precio" : 40.2,
+    "active" : false,
+    "created_at" : ISODate("1999-12-12-122T05:00:00Z"),
+    "somedata" : [
+            1,
+            "a", 
+            []
+         ],
+    "facturer" : {
+        "name" : "dell",
+        "version" : "xps",
+        "location" : {
+            "city" : "usa",
+            "addres" : "asdadsad"
+        }
+    }
+}
+
+
+~~~~~~~~~~~~~~CRUD
+
+
+>use mystore
+
+>db.createCollection("products")
+
+>show collections
+products
+
+>db.products.insert({"name":"keyboard"})
+WriteResult({"nInserted" : 1})
+
+>db.products.find()
+{"id" : ObjectId("5df4334f"),  "name" : "keyboard"}
+
+>db.products.insert({"name" : "laptop", "price" : 999.99})
+WriteResult({"nInserted" : 1})
+
+>db.products.find()
+{"id" : ObjectId("5df4334f"),  "name" : "keyboard"}
+{"id" : ObjectId("232rfv34"),  "name" : "laptop", "price" : 999.99 }
+
+
+
+> db.products.insert([
+    {
+        "name" : "mouse",
+        "description" : "razer mouse",
+        "tags" : ["computers", "gaming"],
+        "quantity" : 14,
+        "created_at" : new Date()
+    },
+    {
+        "name" : "monitor",
+        "description" : "lg MONITOR",
+        "tags" : ["computers", "gaming"],
+        "quantity" : 3,
+        "created_at" : new Date()
+
+    }
+])
+BulkWriteResult({
+    "WriteErrors" : [],
+    "WriteConcernErrors" : [ ],
+    "nInserted" : 2,
+    "nUpserted" : 0,
+    "nMatched" : 0,
+    "nModified" : 0,
+    "nRemove" : 0,
+    "upserted" : []
+})
+
+
+>db.products.find()
+{"id" : ObjectId("5df4334f"),  "name" : "keyboard"}
+{"id" : ObjectId("232rfv34"),  "name" : "laptop", "price" : 999.99 }
+ {"name":"razer mouse","description":"lg MONITOR",  "tags" : ["computers", "gaming"],  "quantity" : 3, "created_at" : new Date() }
+ {"name":"monitor", "description" : "lg MONITOR",  "tags" : ["computers", "gaming"],  "quantity" : 3, "created_at" : new Date() }
+
+
+ >cls
+
+ >db.products.find({name : "mouse"})
+ { "name" : "monitor", "description" : "lg MONITOR", "tags" :["computers","gaming"],"quantity" : 3, "created_at" : new Date() }
+
+
+ >db.products.find({pice : 999.99})
+{"id" : ObjectId("232rfv34"),  "name" : "laptop", "price" : 999.99 }
+
+
+>db.products.find({"tags" : "computers", "name" : "monitor"})
+ {"name":"monitor", "description" : "lg MONITOR",  "tags" : ["computers", "gaming"],  "quantity" : 3, "created_at" : new Date() }
+
+
+
+~~~~~~~~~~~~~~~
+
+
+db.products.findOne({"tags" : "computer"})    Devuelve el primer dato que encuentre
+
+
+db.products.findOne({"tags" : "computer"}, {"name" : 1, "description" : 1})
+{
+    "_id" : ObjectId("5432"),
+    "name":"razer mouse",
+    "description":"lg MONITOR"
+}
+
+db.products.findOne({"tags" : "computer"}, {"name" : 1, "description" : 1, "_id":0})
+{
+    "name":"razer mouse",
+    "description":"lg MONITOR"
+}
+
+~~~~~~~~~~~~~~~~~~
+
+
+>db.products.find({"tags" : "computer"}).sort({name:1})
+>db.products.find().limit(3)
+
+>db.products.count()
+4
+
+>db.products.find().forEach(products => print("Product Name: "+ product.name))
+Product Name: keyboard
+Product Name: laptop
+Product Name: mouse
+Product Name: monitor
+
+
+>db.products.find().forEach(products => print("Product Price: "+ product.price))
+Product Price: undefined
+Product Price: 999.99
+Product Price: undefined
+Product Price: undefined
+
+
+
+
+>db.products.update({"name":"keyboard"},{"price" :88.8})    <---- Remplaza todo el contenido por unicamente {"price" :88.8}
+WriteResult({"nMatched" : 1, "nUpserted" : 0 , "nModified": 1}) 
+
+
+
+>db.products.update({"name":"keyboard"},{$set : {"price" :88.8}})  <---- Este $set SI inserta un nuevo dato sin borrar los otros
+WriteResult({"nMatched" : 1, "nUpserted" : 0 , "nModified": 1}) 
+
+
+~~~~~~~~~~
+
+>db.products.update({"name":"desktop"},{$set : {"description" : "Gamming desktop"}}, {upsert: true}) 
+WriteResult({"nMatched" : 0, "nUpserted" : 1 , "nModified": 0, "_id" : ObjectId("433d3d23")}) 
+
+~~~~~~~~~~~~~~
+
+Incrementar un campo numerico
+
+>db.products.update({"name":"keyboard"},{$inc : {"price" : 0.01 }}) 
+WriteResult({"nMatched" : 0, "nUpserted" : 1 , "nModified": 0, "_id" : ObjectId("433d3d23")}) 
+
+~~~~~~~~~
+
+RENOMBRAR un atributo name
+
+>db.products.update({"name":"laptop"},{$rename : {"name" : "nombre" }}) 
+
+
+~~~~~~~~
+
+ELIMINAR
+
+>db.products.remove({"nombre" : "keyboard"})
+WriteResult({nRemoved" : 1}) 
+
+
+>db.products.remove({})
+WriteResult({nRemoved" : 3}) 
+
+
+
+
+
+
